@@ -896,13 +896,16 @@
       };
       function renderProjects(language) {
         const projectTechIcons = [
-          [['Python', 'python', '3776AB'], ['C2PA', 'shield', 'B3263E'], ['MCP', 'server', '64748B'], ['AASIST', 'brain', '7C3AED']],
-          [['OCR', 'googledocs', '4285F4'], ['QVAC', 'q', '00C7B7'], ['OpenAI', 'openai', '10A37F'], ['Voice AI', 'microphone', '64748B']],
+          [['Python', 'python', '3776AB'], ['C2PA', 'local:ai.svg', 'B3263E'], ['MCP', 'local:ai.svg', '64748B'], ['AASIST', 'local:ai.svg', '7C3AED']],
+          [['OCR', 'googledocs', '4285F4'], ['QVAC', 'local:ai.svg', '00C7B7'], ['OpenAI', 'openai', '10A37F'], ['Voice AI', 'local:ai.svg', '64748B']],
           [['TypeScript', 'typescript', '3178C6'], ['JavaScript', 'javascript', 'F7DF1E'], ['Solidity', 'ethereum', '627EEA']],
-          [['Unity', 'unity', '000000'], ['C#', 'csharp', '239120'], ['Solidity', 'ethereum', '627EEA']],
+          [['Unity', 'unity', '000000'], ['C#', 'dotnet', '512BD4'], ['Solidity', 'ethereum', '627EEA']],
           [['Python', 'python', '3776AB'], ['OpenAI', 'openai', '10A37F'], ['ESP32-S3', 'espressif', 'E7352C'], ['Voice AI', 'microphone', '64748B']],
-          [['Python', 'python', '3776AB'], ['WCAG', 'accessibility', '1D4ED8'], ['Lighthouse', 'lighthouse', 'F44B21'], ['PCA', 'chartdotjs', 'FF6384'], ['K-Means', 'databricks', 'FF3621'], ['ANS', 'brain', '7C3AED']]
+          [['Python', 'python', '3776AB'], ['WCAG', 'universalaccess', '1D4ED8'], ['Lighthouse', 'lighthouse', 'F44B21'], ['PCA', 'googleanalytics', 'FF6384'], ['K-Means', 'databricks', 'FF3621'], ['ANS', 'local:ai.svg', '7C3AED']]
         ];
+        const iconUrl = (icon, color) => icon.startsWith('local:')
+          ? `assets/img/tech/${icon.slice(6)}`
+          : `https://cdn.simpleicons.org/${icon}/${color}`;
         const section = projectSectionCopy[language];
         document.getElementById('projects-kicker').textContent = section[0];
         document.getElementById('projects-title').innerHTML = `${section[1].split(' ').slice(0, -2).join(' ')} <span class="font-serif italic font-normal text-paper-muted dark:text-carbon-muted">${section[1].split(' ').slice(-2).join(' ')}</span>`;
@@ -920,7 +923,7 @@
           if (technologyNode && technologyNode.tagName === 'SPAN') {
             technologyNode.classList.add('project-tech-icons');
             technologyNode.setAttribute('aria-label', technologies);
-            technologyNode.innerHTML = projectTechIcons[index].map(([name, icon, color]) => `<img src="https://cdn.simpleicons.org/${icon}/${color}" alt="${name}" title="${name}" loading="lazy">`).join('');
+            technologyNode.innerHTML = projectTechIcons[index].map(([name, icon, color]) => `<img src="${iconUrl(icon, color)}" alt="${name}" title="${name}" loading="lazy">`).join('');
           }
           if (linkNode && linkNode.textContent.trim()) linkNode.textContent = linkText;
         });
