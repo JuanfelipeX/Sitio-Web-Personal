@@ -99,6 +99,12 @@
     }
     #sphere-status-dot { box-shadow: 0 0 12px rgba(53,215,255,.85); }
     #gantz-sphere-canvas { filter: drop-shadow(0 0 14px rgba(53,215,255,.10)); }
+    .sphere-hud { position: absolute; inset: .75rem .75rem auto; z-index: 2; display: flex; align-items: center; justify-content: space-between; pointer-events: none; font: 10px/1 monospace; letter-spacing: .14em; text-transform: uppercase; }
+    .sphere-hud-badge { padding: .35rem .5rem; border-radius: .25rem; color: #7dd3fc; background: rgba(5,7,12,.72); border: 1px solid rgba(125,211,252,.22); box-shadow: 0 0 18px rgba(53,215,255,.08); }
+    .sphere-hud-signal { display: inline-flex; align-items: center; gap: .35rem; color: #b3263e; }
+    .sphere-hud-signal::before { content: ''; width: .4rem; height: .4rem; border-radius: 999px; background: currentColor; box-shadow: 0 0 10px currentColor; animation: sphere-signal 1.8s ease-in-out infinite; }
+    @keyframes sphere-signal { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+    .dark .sphere-hud-badge { background: rgba(5,7,12,.84); }
     @media (max-width: 640px) { #gantz-sphere-canvas { min-height: 300px; } }
     .projects-grid > article:nth-child(1) { order: 1; }
     .projects-grid > article:nth-child(2) { order: 4; }
@@ -294,6 +300,7 @@
             
             <!-- Interactive 3D Sphere Canvas -->
             <div class="relative w-full aspect-square flex items-center justify-center my-1">
+              <div class="sphere-hud" aria-hidden="true"><span class="sphere-hud-badge">GANTZ // CORE_01</span><span class="sphere-hud-signal">LIVE</span></div>
               <canvas id="gantz-sphere-canvas" tabindex="0" role="button"
                 aria-label="Esfera negra interactiva inspirada en Gantz. Arrastra para rotarla, usa la rueda para acercar o alejar, las flechas para moverla y Enter para cambiar la transmisión."
                 class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
