@@ -109,15 +109,73 @@
     .eco-logo { transform: scale(1.35); }
     .accessibility-logo { transform: scale(1.28); }
     .kobia-logo { transform: scale(1.24); }
-    .qconta-logo { transform: scale(1.12); }
+    .qconta-logo { transform: scale(1.45); }
+    .avax-logo { transform: translateY(16px) scale(2); }
+    .projects-grid article:hover .avax-logo { transform: translateY(16px) scale(2.08); }
+    .projects-grid article:hover .eco-logo { transform: scale(1.42); }
+    .projects-grid article:hover .kobia-logo { transform: scale(1.3); }
+    .projects-grid article:hover .qconta-logo { transform: scale(1.55); }
+    .gameavax-logo { transform: scale(1.04); }
+    /* Keep brand artwork vivid against the carbon theme instead of darkening it
+       through multiply blending. */
+    .dark .projects-grid img.mix-blend-multiply {
+      mix-blend-mode: normal;
+      filter: brightness(1.45) saturate(1.16) contrast(1.06);
+    }
+    /* Flatten white source backgrounds into the dark media panel. */
+    .dark .projects-grid .qconta-logo,
+    .dark .projects-grid .accessibility-logo {
+      mix-blend-mode: multiply !important;
+      filter: brightness(3.2) saturate(1.55) contrast(1.08);
+      background: transparent !important;
+    }
+    /* Let dark lettering disappear into the carbon surface while preserving
+       the colored Avax and Kobia marks. */
+    .dark .projects-grid .avax-logo,
+    .dark .projects-grid .kobia-logo {
+      mix-blend-mode: screen !important;
+      filter: brightness(1.75) saturate(1.35) contrast(1.08);
+    }
+    .dark .projects-grid .eco-logo {
+      mix-blend-mode: screen !important;
+      filter: brightness(1.45) saturate(1.25) contrast(1.06);
+    }
+    .dark .projects-grid article > div:first-child > div:first-child {
+      /* Keep logo artwork faithful in dark mode; the light media panel gives
+         every source image a clean, consistent presentation surface. */
+      background-color: #e7e3d8 !important;
+    }
+    .dark .projects-grid article > div:first-child > div:first-child img {
+      mix-blend-mode: normal !important;
+      filter: none !important;
+      opacity: 1 !important;
+    }
+    .dark .projects-grid article > div:first-child > div:first-child .qconta-logo {
+      mix-blend-mode: multiply !important;
+    }
+    .dark .projects-grid .bg-carbon-elevated {
+      background-color: #20242d;
+    }
+    .scroll-reveal {
+      opacity: 0;
+      transform: translate3d(0, 34px, 0) scale(.985);
+      filter: blur(3px);
+      will-change: opacity, transform, filter;
+      transition: opacity 680ms cubic-bezier(.22, 1, .36, 1), transform 680ms cubic-bezier(.22, 1, .36, 1), filter 680ms ease;
+    }
+    .scroll-reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
+    @media (prefers-reduced-motion: reduce) { .scroll-reveal { opacity: 1; transform: none; filter: none; transition: none; } }
     .projects-grid > article > div:last-child { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .projects-grid article p { text-align: justify; }
+    .projects-grid article { transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease; }
+    .projects-grid article:hover { transform: translateY(-6px); box-shadow: 0 18px 35px rgba(24, 32, 48, 0.12); }
   </style>
 </head>
 
 <body class="bg-paper-bg text-paper-text dark:bg-carbon-bg dark:text-carbon-text grain-overlay antialiased selection:bg-vermilion/20 selection:text-vermilion transition-colors duration-300">
 
   <!-- Skip to main content -->
-  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vermilion focus:text-white focus:font-mono focus:text-xs focus:rounded">
+  <a id="skip-link" href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vermilion focus:text-white focus:font-mono focus:text-xs focus:rounded">
     Saltar al contenido
   </a>
 
@@ -164,7 +222,7 @@
           <select id="language-select" class="sr-only" tabindex="-1" aria-hidden="true"><option value="es" selected>ES</option><option value="en">EN</option><option value="fr">FR</option></select>
         </div>
 
-        <a href="#contact" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded bg-paper-text text-paper-bg dark:bg-carbon-text dark:text-carbon-bg font-mono text-xs font-medium hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white transition-colors">
+        <a id="contact-link" href="#contact" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded bg-paper-text text-paper-bg dark:bg-carbon-text dark:text-carbon-bg font-mono text-xs font-medium hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white transition-colors">
           Contacto <span aria-hidden="true">↗</span>
         </a>
 
@@ -198,7 +256,7 @@
         <div class="lg:col-span-7 space-y-7">
           <div class="inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-paper-muted dark:text-carbon-muted">
             <span class="w-2 h-2 rounded-full bg-vermilion"></span>
-            <span>Ingeniero de Sistemas · Especialista en Datos e IA · Bogotá, Colombia</span>
+            <span id="hero-role">Ingeniero de Sistemas · Especialista en Datos e IA · Bogotá, Colombia</span>
           </div>
 
           <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-semibold tracking-tight leading-[1.04]">
@@ -206,7 +264,7 @@
             <span class="block whitespace-nowrap">puedes programarlo.</span>
           </h1>
 
-          <p class="text-base sm:text-lg text-paper-muted dark:text-carbon-muted max-w-xl leading-relaxed font-normal text-justify">
+          <p id="hero-bio" class="text-base sm:text-lg text-paper-muted dark:text-carbon-muted max-w-xl leading-relaxed font-normal text-justify">
             Soy <strong class="text-paper-text dark:text-carbon-text font-medium">Juan Felipe Jiménez</strong>, Ingeniero de Sistemas y Magíster en Ingeniería y Analítica de Datos, con más de <strong class="text-paper-text dark:text-carbon-text font-medium">5 años</strong> de experiencia en tecnología. Trabajo en ingeniería de datos, inteligencia artificial, analítica y desarrollo de software para crear soluciones útiles y con impacto.
           </p>
 
@@ -215,13 +273,13 @@
             <a href="#work" class="inline-flex items-center gap-2.5 px-6 py-3 rounded bg-paper-text text-paper-bg dark:bg-carbon-text dark:text-carbon-bg font-mono text-xs uppercase tracking-wider font-medium hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white transition-colors">
               Explorar proyectos <span aria-hidden="true">↓</span>
             </a>
-            <a href="CV_Juan_Jimenez.pdf" target="_blank" rel="noopener"
+            <a id="resume-link" href="CV_Juan_Jimenez_Espanol.pdf" target="_blank" rel="noopener"
               class="inline-flex items-center gap-2 px-5 py-3 rounded border border-paper-border dark:border-carbon-border bg-paper-surface/60 dark:bg-carbon-surface/60 font-mono text-xs uppercase tracking-wider text-paper-text dark:text-carbon-text hover:border-paper-text dark:hover:border-carbon-text transition-colors">
               Ver Résumé / CV <span aria-hidden="true">↗</span>
             </a>
           </div>
 
-          <p class="max-w-xl border-l-2 border-vermilion/50 pl-4 pt-1 text-sm italic leading-relaxed text-paper-muted dark:text-carbon-muted text-justify">
+          <p id="hero-philosophy" class="max-w-xl border-l-2 border-vermilion/50 pl-4 pt-1 text-sm italic leading-relaxed text-paper-muted dark:text-carbon-muted text-justify">
             Mi filosofía: construir una vida llena de experiencias, aprendizajes y desafíos; conocerme, ser consciente de quién soy y evolucionar constantemente para dejar una huella positiva en las personas y en esta tierra.
           </p>
         </div>
@@ -420,8 +478,8 @@
     </section>
 
     <!-- 03 // EDUCATION & LANGUAGES -->
-    <section id="education" class="pt-6 pb-8 sm:pt-8 sm:pb-12">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-5 gap-4 border-b border-paper-border dark:border-carbon-border">
+    <section id="education" class="pt-0 pb-6 sm:pt-0 sm:pb-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-5 pb-4 gap-4 border-b border-paper-border dark:border-carbon-border">
         <div>
           <div id="education-kicker" class="font-mono text-xs uppercase tracking-widest text-vermilion mb-3">03 // Formación</div>
           <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight"><span id="education-title-main">Una base para </span><span id="education-title-accent" class="font-serif italic font-normal text-paper-muted dark:text-carbon-muted">lo que viene.</span></h2>
@@ -468,8 +526,8 @@
     </section>
 
     <!-- 04 // SELECTED WORK (PROYECTOS) -->
-    <section id="work" class="pt-8 pb-16 sm:pt-12 sm:pb-24 border-t border-paper-border dark:border-carbon-border">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 gap-4 border-b border-paper-border dark:border-carbon-border">
+    <section id="work" class="pt-4 pb-6 sm:pt-6 sm:pb-8 border-t border-paper-border dark:border-carbon-border">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-5 pb-4 gap-4 border-b border-paper-border dark:border-carbon-border">
         <div>
           <div id="projects-kicker" class="font-mono text-xs uppercase tracking-widest text-vermilion mb-3">
             04 // Selected Work
@@ -486,10 +544,10 @@
 
       <div class="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Project 01: ECO -->
-        <article class="group rounded-lg border border-vermilion/50 bg-paper-surface/50 dark:bg-carbon-surface/50 hover:border-vermilion transition-colors flex flex-col justify-between overflow-hidden">
+        <article class="group rounded-lg border border-paper-border dark:border-carbon-border bg-paper-surface/50 dark:bg-carbon-surface/50 hover:border-paper-muted dark:hover:border-carbon-muted transition-colors flex flex-col justify-between overflow-hidden">
           <div>
             <div class="h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border p-4 flex items-center justify-center overflow-hidden">
-              <img src="assets/img/project-eco-trace-transparent.png" alt="Logo ECO Trace · Defensa epistémica" class="eco-logo h-full w-full object-contain object-center transition-transform duration-500 group-hover:scale-105">
+              <img src="assets/img/project-eco-trace-transparent.png" alt="Logo ECO Trace · Defensa epistémica" class="eco-logo h-full w-full object-contain object-center mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
             </div>
             <div class="p-6 space-y-3">
               <div class="font-mono text-[10px] uppercase tracking-widest text-vermilion">AI Safety Hackathon · 3.er lugar</div>
@@ -504,10 +562,10 @@
         </article>
 
         <!-- Project 02: QConta -->
-        <article class="group rounded-lg border border-vermilion/50 bg-paper-surface/50 dark:bg-carbon-surface/50 hover:border-vermilion transition-colors flex flex-col justify-between overflow-hidden">
+        <article class="group rounded-lg border border-paper-border dark:border-carbon-border bg-paper-surface/50 dark:bg-carbon-surface/50 hover:border-paper-muted dark:hover:border-carbon-muted transition-colors flex flex-col justify-between overflow-hidden">
           <div>
-            <div class="h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border p-5 flex items-center justify-center">
-              <img src="assets/img/project-qconta.png" alt="Logo QConta" class="qconta-logo h-full w-full object-cover object-center mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
+            <div class="h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border p-5 flex items-center justify-center overflow-hidden">
+              <img src="assets/img/project-qconta.png" alt="Logo QConta" class="qconta-logo h-full w-full object-contain object-center mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
             </div>
             <div class="p-6 space-y-3">
               <div class="font-mono text-[10px] uppercase tracking-widest text-vermilion">Hackathon · OCR · Voice AI</div>
@@ -517,7 +575,7 @@
           </div>
           <div class="px-6 pb-6 pt-3 border-t border-paper-border/60 dark:border-carbon-border/60 flex items-center justify-between font-mono text-[11px]">
             <span class="text-paper-muted dark:text-carbon-muted">OCR · QVAC · Voice AI</span>
-            <a href="https://lnkd.in/eVU6FWUa" target="_blank" rel="noopener" class="text-paper-text dark:text-carbon-text hover:text-vermilion font-medium">Ver ↗</a>
+            <a href="https://www.youtube.com/watch?v=m6ItAlVRwQo" target="_blank" rel="noopener" class="text-paper-text dark:text-carbon-text hover:text-vermilion font-medium">Ver proyecto ↗</a>
           </div>
         </article>
         
@@ -525,25 +583,14 @@
         <article class="group rounded-lg border border-paper-border dark:border-carbon-border bg-paper-surface/50 dark:bg-carbon-surface/50 hover:border-paper-muted dark:hover:border-carbon-muted transition-colors flex flex-col justify-between overflow-hidden">
           <div>
             <!-- Minimalist Architectural Diagram Preview -->
-              <a href="#" target="_blank" rel="noopener" aria-label="Ver Avax Racing League"
-              class="block h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border p-5 relative overflow-hidden">
-              <div class="flex items-center justify-between font-mono text-[11px] text-paper-muted dark:text-carbon-muted">
-                <span>05 // AVAX RACING LEAGUE</span>
-                <span class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-paper-text dark:text-carbon-text">↗</span>
-              </div>
-              <!-- Subtle geometric vector diagram -->
-              <svg class="w-full h-28 mt-2 stroke-paper-muted/40 dark:stroke-carbon-muted/40" viewBox="0 0 240 90" fill="none">
-                <circle cx="60" cy="45" r="28" stroke-width="1" />
-                <circle cx="120" cy="45" r="28" stroke-width="1" />
-                <circle cx="180" cy="45" r="28" stroke-width="1" />
-                <line x1="20" y1="45" x2="220" y2="45" stroke-width="1" stroke-dasharray="3 3" />
-                <circle cx="120" cy="45" r="4" class="fill-vermilion stroke-none" />
-              </svg>
-            </a>
+              <div aria-label="Logo Avax Racing League"
+              class="block h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border p-3 relative overflow-hidden">
+              <img src="assets/img/project-avax.png" alt="Logo Avax Racing League" class="avax-logo w-full h-28 mt-2 object-contain mix-blend-multiply transition-transform duration-500">
+            </div>
 
             <div class="p-6 space-y-3">
               <div class="font-mono text-[10px] uppercase tracking-widest text-vermilion">
-                Hackathon · Blockchain · Collaboration
+                Hackathon Avalanche Summit LATAM Hackathon Argentina 2024 · 3.er lugar
               </div>
               <h3 class="text-xl font-semibold">Avax Racing League Argentina</h3>
               <p class="text-sm text-paper-muted dark:text-carbon-muted leading-relaxed">
@@ -553,9 +600,9 @@
           </div>
 
           <div class="px-6 pb-6 pt-3 border-t border-paper-border/60 dark:border-carbon-border/60 flex items-center justify-between font-mono text-[11px]">
-            <span class="text-paper-muted dark:text-carbon-muted">Blockchain · Git · Web3</span>
-            <a href="#" target="_blank" rel="noopener" class="text-paper-text dark:text-carbon-text hover:text-vermilion font-medium">
-              Ver ↗
+            <span class="text-paper-muted dark:text-carbon-muted">TypeScript · JavaScript · Solidity</span>
+            <a href="https://github.com/JuanfelipeX/AvaxRacing-Hackathon-LATAM" target="_blank" rel="noopener" class="text-paper-text dark:text-carbon-text hover:text-vermilion font-medium">
+              Ver proyecto ↗
             </a>
           </div>
         </article>
@@ -563,36 +610,25 @@
         <!-- Project 04: GameAvax Bogotá -->
         <article class="group rounded-lg border border-paper-border dark:border-carbon-border bg-paper-surface/50 dark:bg-carbon-surface/50 hover:border-paper-muted dark:hover:border-carbon-muted transition-colors flex flex-col justify-between overflow-hidden">
           <div>
-            <a href="#" target="_blank" rel="noopener" aria-label="Abrir GameAvax Bogotá"
-              class="block h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border p-5 relative overflow-hidden">
-              <div class="flex items-center justify-between font-mono text-[11px] text-paper-muted dark:text-carbon-muted">
-                <span>06 // GAMEAVAX BOGOTÁ</span>
-                <span class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-paper-text dark:text-carbon-text">↗</span>
-              </div>
-              <svg class="w-full h-28 mt-2 stroke-paper-muted/40 dark:stroke-carbon-muted/40" viewBox="0 0 240 90" fill="none">
-                <rect x="45" y="18" width="60" height="54" rx="3" stroke-width="1" />
-                <rect x="135" y="18" width="60" height="54" rx="3" stroke-width="1" />
-                <path d="M105 45 L135 45" stroke-width="1.2" />
-                <circle cx="120" cy="45" r="3.5" class="fill-vermilion stroke-none" />
-              </svg>
-            </a>
+            <div aria-label="Logo Ecos de Guacatá"
+              class="block h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border p-3 relative overflow-hidden">
+              <img src="assets/img/project-gameavax.png" alt="Logo Ecos de Guacatá" class="gameavax-logo w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105">
+            </div>
 
             <div class="p-6 space-y-3">
               <div class="font-mono text-[10px] uppercase tracking-widest text-vermilion">
-                Community Project · Game · Blockchain
+                GameAvax 2024 · 1.er puesto
               </div>
-              <h3 class="text-xl font-semibold">GameAvax Bogotá · Ecos de Guacatá</h3>
+              <h3 class="text-xl font-semibold">Ecos de Guacatá</h3>
               <p class="text-sm text-paper-muted dark:text-carbon-muted leading-relaxed">
-                Videojuego roguelike inspirado en la cultura local. Trabajamos la narrativa, el diseño de niveles y la integración de una experiencia jugable con tecnología blockchain.
+                Aventura roguelike inspirada en la cultura de Guacatá, con narrativa, personajes y desafíos diseñados para cada partida. El proyecto combina exploración, juego en equipo y una experiencia blockchain.
               </p>
             </div>
           </div>
 
           <div class="px-6 pb-6 pt-3 border-t border-paper-border/60 dark:border-carbon-border/60 flex items-center justify-between font-mono text-[11px]">
-            <span class="text-paper-muted dark:text-carbon-muted">Game · Blockchain · Git</span>
-            <a href="#" target="_blank" rel="noopener" class="text-paper-text dark:text-carbon-text hover:text-vermilion font-medium">
-              Abrir ↗
-            </a>
+            <span class="text-paper-muted dark:text-carbon-muted">Unity · C# · Solidity</span>
+            <a href="https://juanfelipex.itch.io/ecos-de-guacata" target="_blank" rel="noopener" class="text-paper-text dark:text-carbon-text hover:text-vermilion font-medium">Ver proyecto ↗</a>
           </div>
         </article>
 
@@ -625,7 +661,7 @@
         <article class="group rounded-lg border border-paper-border dark:border-carbon-border bg-paper-surface/50 dark:bg-carbon-surface/50 hover:border-paper-muted dark:hover:border-carbon-muted transition-colors flex flex-col justify-between overflow-hidden">
           <div>
             <div class="h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border overflow-hidden">
-              <img src="assets/img/project-accessibility.png" alt="Logo del proyecto de accesibilidad web" class="accessibility-logo h-full w-full object-contain object-center p-2 mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
+              <img src="assets/img/project-accessibility-transparent.png" alt="Logo del proyecto de accesibilidad web" class="accessibility-logo h-full w-full object-contain object-center p-2 transition-transform duration-500 group-hover:scale-105">
             </div>
             <div class="p-6 space-y-3">
               <div class="font-mono text-[10px] uppercase tracking-widest text-vermilion">Academic Research · Data Science</div>
@@ -643,24 +679,24 @@
     </section>
 
     <!-- 05 // CONTACT -->
-    <section id="contact" class="py-16 sm:py-24">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+    <section id="contact" class="pt-6 pb-8 sm:pt-8 sm:pb-10 border-t border-b border-paper-border dark:border-carbon-border">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-end">
         <div class="lg:col-span-8 space-y-5">
-          <div class="font-mono text-xs uppercase tracking-widest text-vermilion">
-          05 // Your Turn · Open to Good Conversations
+          <div id="contact-kicker" class="font-mono text-xs uppercase tracking-widest text-vermilion">
+          05 // Tu turno · Abierto a buenas conversaciones
           </div>
-          <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight">
-            Have a thoughtful<br>
-            problem to <span class="font-serif italic font-normal text-vermilion">solve?</span>
+          <h2 id="contact-title" class="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight">
+            ¿Tienes un problema<br>
+            interesante que <span class="font-serif italic font-normal text-vermilion">resolver?</span>
           </h2>
-          <p class="text-base sm:text-lg text-paper-muted dark:text-carbon-muted max-w-xl">
+          <p id="contact-description" class="text-base sm:text-lg text-paper-muted dark:text-carbon-muted max-w-xl">
             Me encantaría conversar sobre tu equipo, tus flujos de datos o el producto digital que estás construyendo.
           </p>
 
           <div class="pt-3 flex flex-wrap items-center gap-4">
             <a href="mailto:pipesjimenez6@gmail.com"
               class="inline-flex items-center gap-2 px-6 py-3.5 rounded bg-paper-text text-paper-bg dark:bg-carbon-text dark:text-carbon-bg font-mono text-xs uppercase tracking-wider font-medium hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white transition-colors">
-              Escribir correo <span aria-hidden="true">↗</span>
+              <span id="contact-email-label">Escribir correo</span> <span aria-hidden="true">↗</span>
             </a>
 
             <button id="copy-email-btn" type="button"
@@ -670,23 +706,24 @@
           </div>
         </div>
 
-        <div class="lg:col-span-4 lg:text-right space-y-2 font-mono text-xs text-paper-muted dark:text-carbon-muted">
+        <div class="lg:col-span-4 lg:text-right space-y-5 font-mono text-base sm:text-lg text-paper-muted dark:text-carbon-muted">
           <div>
-            <a href="https://www.linkedin.com/in/juan-felipe-jimenez-pacheco-92293a1a6/" target="_blank" rel="noopener" class="hover:text-paper-text dark:hover:text-carbon-text">
-              LINKEDIN ↗
+            <a id="social-linkedin" href="https://www.linkedin.com/in/juan-felipe-jimenez-pacheco-92293a1a6/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:text-paper-text dark:hover:text-carbon-text">
+              <span class="text-vermilion" aria-hidden="true">in</span> LINKEDIN ↗
             </a>
           </div>
           <div>
-            <a href="https://github.com/JuanfelipeX" target="_blank" rel="noopener" class="hover:text-paper-text dark:hover:text-carbon-text">
-              GITHUB (@JuanfelipeX) ↗
+            <a id="social-github" href="https://github.com/JuanfelipeX" target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:text-paper-text dark:hover:text-carbon-text">
+              <span class="text-vermilion" aria-hidden="true">⌘</span> GITHUB (@JuanfelipeX) ↗
             </a>
           </div>
           <div>
-            <a href="tel:+573194742855" class="hover:text-paper-text dark:hover:text-carbon-text">
+            <a id="social-phone" href="tel:+573194742855" class="inline-flex items-center gap-2 hover:text-paper-text dark:hover:text-carbon-text">
+              <span class="text-vermilion" aria-hidden="true">✆</span>
               +57 319 474 2855
             </a>
           </div>
-          <div class="pt-2 text-[11px]">
+          <div id="social-location" class="pt-2 text-sm">
             BOGOTÁ, COLOMBIA · UTC−5
           </div>
         </div>
@@ -698,9 +735,9 @@
   <!-- Minimalist Footer -->
   <footer class="border-t border-paper-border dark:border-carbon-border py-8">
     <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-paper-muted dark:text-carbon-muted">
-      <span>Juan Felipe Jimenez · Designed with curiosity © <span id="year">2026</span></span>
-      <a href="#top" class="hover:text-paper-text dark:hover:text-carbon-text transition-colors">
-        BACK TO TOP ↑
+      <span id="footer-credit">Juan Felipe Jimenez - Sitio Web Personal © <span id="year">2026</span></span>
+      <a id="back-to-top" href="#top" class="hover:text-paper-text dark:hover:text-carbon-text transition-colors">
+        VOLVER ARRIBA ↑
       </a>
     </div>
   </footer>
@@ -751,7 +788,7 @@
 
       const languageCopy = {
         es: {
-          nav: ['01. Inicio', '02. Experiencia', '03. Formación', '04. Proyectos'],
+          nav: ['01. Inicio', '02. Experiencia', '03. Formación', '04. Proyectos'], heroRole: 'Ingeniero de Sistemas · Especialista en Datos e IA · Bogotá, Colombia', heroBio: 'Soy Juan Felipe Jiménez, Ingeniero de Sistemas y Magíster en Ingeniería y Analítica de Datos, con más de 5 años de experiencia en tecnología. Trabajo en ingeniería de datos, inteligencia artificial, analítica y desarrollo de software para crear soluciones útiles y con impacto.', philosophy: 'Mi filosofía: construir una vida llena de experiencias, aprendizajes y desafíos; conocerme, ser consciente de quién soy y evolucionar constantemente para dejar una huella positiva en las personas y en esta tierra.', contact: 'Contacto', skip: 'Saltar al contenido', contactSection: { kicker: '05 // Tu turno · Abierto a buenas conversaciones', title: ['¿Tienes un problema ', 'interesante que resolver?'], description: 'Me encantaría conversar sobre tu equipo, tus flujos de datos o el producto digital que estás construyendo.', email: 'Escribir correo', copy: 'Copiar', location: 'BOGOTÁ, COLOMBIA · UTC−5', backTop: 'VOLVER ARRIBA ↑' },
           headline: ['Si puedes ', 'imaginarlo,', 'puedes programarlo.'],
           cta: ['Explorar proyectos ↓', 'Ver Résumé / CV ↗'],
           mission: ['JUAN FELIPE JIMENEZ', 'INGENIERO DE SOFTWARE', 'DATOS E IA'],
@@ -765,13 +802,13 @@
           education: {
             kicker: '03 // Formación', title: ['Una base para ', 'lo que viene.'],
             summary: 'Aprendizaje continuo entre ingeniería de software, idiomas y práctica profesional.',
-            dates: ['2019 — 2023', '2024', '2025 — 2026 · FINALIZADA'],
+            dates: ['2020 — 2023', '2024', '2025 — 2026 · FINALIZADA'],
             titles: ['Ingeniería de Sistemas', 'Inglés · Nivel B2', 'Maestría en Ingeniería y Analítica de Datos'],
             institutions: ['Fundación Universitaria Konrad Lorenz · Bogotá', 'Universidad Pedagógica Nacional · Centro de Lenguas', 'Universidad Jorge Tadeo Lozano · Bogotá'],
           }
         },
         en: {
-          nav: ['01. About', '02. Experience', '03. Education', '04. Projects'],
+          nav: ['01. About', '02. Experience', '03. Education', '04. Projects'], heroRole: 'Systems Engineer · Data & AI Specialist · Bogotá, Colombia', heroBio: 'I am Juan Felipe Jiménez, a Systems Engineer and Master’s graduate in Engineering and Data Analytics with more than 5 years of experience in technology. I work across data engineering, artificial intelligence, analytics, and software development to build useful solutions with impact.', philosophy: 'My philosophy: build a life full of experiences, learning, and challenges; understand who I am, stay conscious, keep evolving, and leave a positive mark on people and this earth.', contact: 'Contact', skip: 'Skip to content', contactSection: { kicker: '05 // Your turn · Open to good conversations', title: ['Have a thoughtful ', 'problem to solve?'], description: 'I would love to talk about your team, data workflows, or the digital product you are building.', email: 'Write an email', copy: 'Copy', location: 'BOGOTÁ, COLOMBIA · UTC−5', backTop: 'BACK TO TOP ↑' },
           headline: ['If you can ', 'imagine it,', 'you can code it.'],
           cta: ['Explore projects ↓', 'View résumé / CV ↗'],
           mission: ['JUAN FELIPE JIMENEZ', 'SOFTWARE ENGINEER', 'DATA & AI'],
@@ -785,13 +822,13 @@
           education: {
             kicker: '03 // Education', title: ['A foundation for ', 'what comes next.'],
             summary: 'Continuous learning across software engineering, languages, and professional practice.',
-            dates: ['2019 — 2023', '2024', '2025 — 2026 · COMPLETED'],
+            dates: ['2020 — 2023', '2024', '2025 — 2026 · COMPLETED'],
             titles: ['Systems Engineering', 'English · B2 level', 'Master’s in Engineering and Data Analytics'],
             institutions: ['Fundación Universitaria Konrad Lorenz · Bogotá', 'Universidad Pedagógica Nacional · Language Center', 'Universidad Jorge Tadeo Lozano · Bogotá'],
           }
         },
         fr: {
-          nav: ['01. Profil', '02. Expérience', '03. Formation', '04. Projets'],
+          nav: ['01. Profil', '02. Expérience', '03. Formation', '04. Projets'], heroRole: 'Ingénieur logiciel · Spécialiste données et IA · Bogotá, Colombie', heroBio: 'Je suis Juan Felipe Jiménez, ingénieur systèmes et titulaire d’un master en ingénierie et analytique des données, avec plus de 5 ans d’expérience dans la technologie. Je travaille en ingénierie des données, intelligence artificielle, analytique et développement logiciel pour créer des solutions utiles et concrètes.', philosophy: 'Ma philosophie : construire une vie riche en expériences, apprentissages et défis, mieux me connaître, évoluer constamment et laisser une empreinte positive sur les personnes et la planète.', contact: 'Contact', skip: 'Aller au contenu', contactSection: { kicker: '05 // À vous de jouer · Ouvert aux bonnes conversations', title: ['Un problème ', 'intéressant à résoudre ?'], description: 'Je serais ravi d’échanger sur votre équipe, vos flux de données ou le produit numérique que vous construisez.', email: 'Écrire un e-mail', copy: 'Copier', location: 'BOGOTÁ, COLOMBIE · UTC−5', backTop: 'RETOUR EN HAUT ↑' },
           headline: ['Si tu peux ', 'l’imaginer,', 'tu peux le coder.'],
           cta: ['Voir les projets ↓', 'Voir le CV ↗'],
           mission: ['JUAN FELIPE JIMENEZ', 'INGÉNIEUR LOGICIEL', 'DONNÉES ET IA'],
@@ -805,7 +842,7 @@
           education: {
             kicker: '03 // Formation', title: ['Une base pour ', 'la suite.'],
             summary: 'Un apprentissage continu en génie logiciel, langues et pratique professionnelle.',
-            dates: ['2019 — 2023', '2024', '2025 — 2026 · TERMINÉE'],
+            dates: ['2020 — 2023', '2024', '2025 — 2026 · TERMINÉE'],
             titles: ['Ingénierie des systèmes', 'Anglais · Niveau B2', 'Master en ingénierie et analytique des données'],
             institutions: ['Fundación Universitaria Konrad Lorenz · Bogotá', 'Universidad Pedagógica Nacional · Centre de langues', 'Universidad Jorge Tadeo Lozano · Bogotá'],
           }
@@ -825,27 +862,27 @@
       const projectCopy = {
         es: [
           ['AI Safety Hackathon · 3.er lugar', 'ECO', 'Diseñamos una plataforma de defensa epistémica que rastrea el origen de afirmaciones, detecta publicaciones repetidas y verifica su procedencia con C2PA. Integra análisis con LLM, detección de audio sintético y un servidor MCP para consultar fuentes y explicar por qué un contenido resulta confiable.', 'Python · C2PA · MCP · AASIST', 'Ver proyecto ↗'],
-          ['Aleph Hackathon 2026', 'QConta', 'MVP que procesa facturas con OCR y permite consultar información financiera por voz en varios idiomas. Combina reconocimiento de voz con modelos locales para convertir documentos y conversaciones en datos financieros estructurados.', 'OCR · QVAC · Voice AI', 'Ver ↗'],
-          ['Hackathon · Blockchain', 'Avax Racing League Argentina', 'Propuesta desarrollada durante un hackathon para impulsar experiencias de carreras y comunidad sobre el ecosistema Avalanche, combinando colaboración, tecnología blockchain y dinámicas competitivas.', 'Blockchain · Git · Web3', 'Ver ↗'],
-          ['Community Project · Game · Blockchain', 'GameAvax Bogotá · Ecos de Guacatá', 'Videojuego roguelike inspirado en la cultura local, creado en equipo para explorar nuevas formas de narrar y jugar con tecnología blockchain, personajes y desafíos generados para cada partida.', 'Game · Blockchain · Git', 'Abrir ↗'],
+          ['Aleph Hackathon 2026', 'QConta', 'MVP que procesa facturas con OCR y permite consultar información financiera por voz en varios idiomas. Combina reconocimiento de voz con modelos locales para convertir documentos y conversaciones en datos financieros estructurados.', 'OCR · QVAC · OpenAI · Voice AI', 'Ver proyecto ↗'],
+          ['Hackathon Avalanche Summit LATAM Hackathon Argentina 2024 · 3.er lugar', 'Avax Racing League Argentina', 'Propuesta desarrollada durante un hackathon para impulsar experiencias de carreras y comunidad sobre el ecosistema Avalanche, combinando colaboración, tecnología blockchain y dinámicas competitivas.', 'TypeScript · JavaScript · Solidity', 'Ver proyecto ↗'],
+          ['GameAvax 2024 · 1.er puesto', 'Ecos de Guacatá', 'Aventura roguelike inspirada en la cultura de Guacatá, con narrativa, personajes y desafíos diseñados para cada partida. El proyecto combina exploración, juego en equipo y una experiencia blockchain.', 'Unity · C# · Solidity', 'Ver proyecto ↗'],
           ['OpenAI Hackathon', 'Kibo · Segundo Cerebro', 'Kibo funciona como un segundo cerebro para personas mayores: escucha y conversa en tiempo real, usa memoria contextual para recuperar información y aplica visión para comprender el entorno. Su experiencia se completa con un compañero robótico construido sobre ESP32-S3.', 'Python · OpenAI · ESP32-S3 · Voice AI', 'Ver proyecto ↗'],
           ['Academic Research · Data Science', 'Clasificación de Sitios Web por Accesibilidad mediante Clustering', 'Proyecto de investigación que automatiza la evaluación de 16 criterios WCAG con Lighthouse, WAVE, Pa11y y axe. Analiza los resultados mediante PCA, MDS, K-Means, K-Medoids y Fuzzy C-Means para identificar patrones de accesibilidad entre sitios web.', 'Python · WCAG · Lighthouse · PCA · K-Means · ANS', 'Ver proyecto ↗']
         ],
         en: [
-          ['AI Safety Hackathon · 3rd place', 'ECO', 'An epistemic defense platform that traces claim origins, connects repeated publications, and maps verifiable evidence.', 'Python · C2PA · MCP · AASIST', 'View project ↗'],
-          ['Aleph Hackathon 2026', 'QConta', 'An MVP that processes invoices with OCR and lets users query financial information by voice in several languages.', 'OCR · QVAC · Voice AI', 'View ↗'],
-          ['Hackathon · Blockchain', 'Avax Racing League Argentina', 'A hackathon proposal for racing experiences and community building on Avalanche.', 'Blockchain · Git · Web3', 'View ↗'],
-          ['Community Project · Game · Blockchain', 'GameAvax Bogotá · Ecos de Guacatá', 'A roguelike game inspired by local culture, created collaboratively to explore new ways to tell stories and play.', 'Game · Blockchain · Git', 'Open ↗'],
-          ['OpenAI Hackathon', 'Kibo · Second Brain', 'A voice assistant for older adults with OpenAI, contextual memory, vision, and real-time conversation through ESP32-S3.', 'Python · OpenAI · ESP32-S3 · Voice AI', 'View project ↗'],
-          ['Academic Research · Data Science', 'Website Accessibility Classification through Clustering', 'Research that automatically evaluates 16 WCAG criteria and analyzes accessibility patterns with dimensionality reduction and clustering.', 'Python · WCAG · Lighthouse · PCA · K-Means · UNS', 'View project ↗']
+          ['AI Safety Hackathon · 3rd place', 'ECO', 'An epistemic defense platform that traces the origin of claims, detects repeated publications, and verifies provenance through C2PA. It combines LLM analysis, synthetic-audio detection, and an MCP server to explain why evidence can be trusted.', 'Python · C2PA · MCP · AASIST', 'View project ↗'],
+          ['Aleph Hackathon 2026', 'QConta', 'An MVP that extracts invoice data with OCR, turns it into structured accounting records, and lets users ask about income, expenses, and transactions by voice in several languages.', 'OCR · QVAC · OpenAI · Voice AI', 'View project ↗'],
+          ['Avalanche Summit LATAM Hackathon', 'Avax Racing League Argentina', 'A racing-community proposal for the Avalanche ecosystem, combining competitive experiences, community participation, digital rewards, and blockchain technology.', 'TypeScript · JavaScript · Solidity', 'View project ↗'],
+          ['GameAvax 2024 · 1st place', 'Ecos de Guacatá', 'A roguelike adventure inspired by Guacatá culture, with narrative, characters, and challenges designed for each run. The project combines exploration, teamwork, and a blockchain-enabled game experience.', 'Unity · C# · Solidity', 'View project ↗'],
+          ['OpenAI Hackathon', 'Kibo · Second Brain', 'Kibo acts as a second brain for older adults: it listens and responds in real time, uses contextual memory to retrieve important information, and applies vision to understand the environment through an ESP32-S3 companion device.', 'Python · OpenAI · ESP32-S3 · Voice AI', 'View project ↗'],
+          ['Academic Research · Data Science', 'Website Accessibility Classification through Clustering', 'Research that automates 16 WCAG checks with Lighthouse, WAVE, Pa11y, and axe, then applies PCA, MDS, K-Means, K-Medoids, and Fuzzy C-Means to identify accessibility patterns across websites.', 'Python · WCAG · Lighthouse · PCA · K-Means · UNS', 'View project ↗']
         ],
         fr: [
-          ['AI Safety Hackathon · 3e place', 'ECO', 'Plateforme de défense épistémique qui retrace l’origine des affirmations et présente un parcours de preuves vérifiables.', 'Python · C2PA · MCP · AASIST', 'Voir le projet ↗'],
-          ['Aleph Hackathon 2026', 'QConta', 'MVP qui traite les factures avec OCR et permet de consulter les informations financières par la voix.', 'OCR · QVAC · Voice AI', 'Voir ↗'],
-          ['Hackathon · Blockchain', 'Avax Racing League Argentina', 'Projet de hackathon pour développer des expériences de course et une communauté sur Avalanche.', 'Blockchain · Git · Web3', 'Voir ↗'],
-          ['Projet communautaire · Jeu · Blockchain', 'GameAvax Bogotá · Ecos de Guacatá', 'Jeu roguelike inspiré de la culture locale, créé en équipe pour explorer de nouvelles formes de narration.', 'Jeu · Blockchain · Git', 'Ouvrir ↗'],
-          ['OpenAI Hackathon', 'Kibo · Second cerveau', 'Assistant vocal pour les personnes âgées avec OpenAI, mémoire contextuelle, vision et conversation en temps réel via ESP32-S3.', 'Python · OpenAI · ESP32-S3 · Voice AI', 'Voir le projet ↗'],
-          ['Recherche académique · Data Science', 'Classification de sites web par accessibilité et clustering', 'Recherche qui évalue automatiquement 16 critères WCAG et analyse les profils d’accessibilité par réduction dimensionnelle et clustering.', 'Python · WCAG · Lighthouse · PCA · K-Means · ANS', 'Voir le projet ↗']
+          ['AI Safety Hackathon · 3e place', 'ECO', 'Plateforme de défense épistémique qui retrace l’origine des affirmations, détecte les publications répétées et vérifie leur provenance avec C2PA. Elle combine analyse LLM, détection audio synthétique et serveur MCP pour expliquer la fiabilité des preuves.', 'Python · C2PA · MCP · AASIST', 'Voir le projet ↗'],
+          ['Aleph Hackathon 2026', 'QConta', 'MVP qui extrait les données des factures avec OCR, les transforme en écritures structurées et permet de consulter les revenus, dépenses et mouvements par la voix.', 'OCR · QVAC · OpenAI · Voice AI', 'Voir le projet ↗'],
+          ['Hackathon Avalanche Summit LATAM', 'Avax Racing League Argentina', 'Projet de communauté de course sur Avalanche, combinant expériences compétitives, participation communautaire, récompenses numériques et technologie blockchain.', 'TypeScript · JavaScript · Solidity', 'Voir le projet ↗'],
+          ['GameAvax 2024 · 1re place', 'Ecos de Guacatá', 'Aventure roguelike inspirée de la culture de Guacatá, avec narration, personnages et défis conçus pour chaque partie. Le projet associe exploration, jeu en équipe et expérience blockchain.', 'Unity · C# · Solidity', 'Voir le projet ↗'],
+          ['OpenAI Hackathon', 'Kibo · Second cerveau', 'Kibo agit comme un second cerveau pour les personnes âgées : il converse en temps réel, utilise une mémoire contextuelle pour retrouver les informations importantes et comprend son environnement grâce à la vision et à un compagnon ESP32-S3.', 'Python · OpenAI · ESP32-S3 · Voice AI', 'Voir le projet ↗'],
+          ['Recherche académique · Data Science', 'Classification de sites web par accessibilité et clustering', 'Recherche qui automatise 16 critères WCAG avec Lighthouse, WAVE, Pa11y et axe, puis applique PCA, MDS, K-Means, K-Medoids et Fuzzy C-Means pour identifier les profils d’accessibilité des sites.', 'Python · WCAG · Lighthouse · PCA · K-Means · ANS', 'Voir le projet ↗']
         ]
       };
       const projectSectionCopy = {
@@ -924,17 +961,34 @@
         const language = languageSelect.value;
         currentLanguage = language;
         const copy = languageCopy[language];
+        document.getElementById('skip-link').textContent = copy.skip;
+        document.getElementById('contact-link').firstChild.textContent = `${copy.contact} `;
+        document.getElementById('hero-role').textContent = copy.heroRole;
+        document.getElementById('hero-bio').textContent = copy.heroBio;
+        document.getElementById('hero-philosophy').textContent = copy.philosophy;
+        document.getElementById('contact-kicker').textContent = copy.contactSection.kicker;
+        document.getElementById('contact-title').innerHTML = `${copy.contactSection.title[0]}<br>${copy.contactSection.title[1].replace(/(solve\?|resolver\?|résoudre \?)/, '<span class="font-serif italic font-normal text-vermilion">$1</span>')}`;
+        document.getElementById('contact-description').textContent = copy.contactSection.description;
+        document.getElementById('contact-email-label').textContent = copy.contactSection.email;
+        document.getElementById('copy-email-text').textContent = `${copy.contactSection.copy}: pipesjimenez6@gmail.com`;
+        document.getElementById('social-location').textContent = copy.contactSection.location;
+        document.getElementById('back-to-top').textContent = copy.contactSection.backTop;
+        document.getElementById('footer-credit').innerHTML = `${language === 'es' ? 'Juan Felipe Jimenez - Sitio Web Personal' : language === 'en' ? 'Juan Felipe Jimenez - Personal Website' : 'Juan Felipe Jimenez - Site personnel'} © <span id="year">${new Date().getFullYear()}</span>`;
         languageFlag.innerHTML = languageFlags[language];
         languageShort.textContent = language.toUpperCase();
         document.documentElement.lang = language;
         document.querySelectorAll('nav[aria-label="Navegación principal"] a').forEach((link, index) => {
           link.textContent = copy.nav[index];
         });
+        document.querySelectorAll('#mobile-menu .mobile-link').forEach((link, index) => {
+          link.textContent = index < copy.nav.length ? copy.nav[index] : `${copy.contact} ↗`;
+        });
         const headline = document.querySelector('#top h1');
         headline.innerHTML = `<span class="block whitespace-nowrap">${copy.headline[0]}<span class="font-serif italic font-normal text-vermilion">${copy.headline[1]}</span></span><span class="block whitespace-nowrap">${copy.headline[2]}</span>`;
         const ctas = document.querySelectorAll('#top .space-y-7 > div a');
         if (ctas[0]) ctas[0].textContent = copy.cta[0];
         if (ctas[1]) ctas[1].textContent = copy.cta[1];
+        document.getElementById('resume-link').href = language === 'es' ? 'CV_Juan_Jimenez_Espanol.pdf' : 'CV_Juan_Jimenez_Ingles.pdf';
         document.getElementById('experience-kicker').textContent = copy.experience[0];
         document.getElementById('experience-title').innerHTML = `${copy.experience[1]}<span class="font-serif italic font-normal text-paper-muted dark:text-carbon-muted">${copy.experience[2]}</span>`;
         document.getElementById('experience-summary').textContent = copy.experience[3];
@@ -973,9 +1027,9 @@
         temp.select();
         try {
           document.execCommand('copy');
-          copyText.textContent = '¡Correo copiado! ✓';
+          copyText.textContent = currentLanguage === 'en' ? 'Email copied! ✓' : currentLanguage === 'fr' ? 'E-mail copié ! ✓' : '¡Correo copiado! ✓';
           setTimeout(() => {
-            copyText.textContent = 'Copiar: pipesjimenez6@gmail.com';
+            copyText.textContent = `${languageCopy[currentLanguage].contactSection.copy}: pipesjimenez6@gmail.com`;
           }, 2200);
         } catch (e) {
           copyText.textContent = 'pipesjimenez6@gmail.com';
@@ -1536,6 +1590,23 @@
 
       requestAnimationFrame(render);
     })();
+
+    // Reveal sections and cards as they enter the viewport for a calm, cohesive scroll rhythm.
+    const revealItems = document.querySelectorAll('main > section, #experience article, .education-card, .projects-grid > article');
+    revealItems.forEach((item, index) => {
+      item.classList.add('scroll-reveal');
+      item.style.transitionDelay = `${Math.min(index * 60, 360)}ms`;
+    });
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, { threshold: 0.04, rootMargin: '0px 0px -12% 0px' });
+    revealItems.forEach((item) => revealObserver.observe(item));
   </script>
 </body>
 </html>
