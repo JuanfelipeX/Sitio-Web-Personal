@@ -167,6 +167,10 @@
     @media (prefers-reduced-motion: reduce) { .scroll-reveal { opacity: 1; transform: none; filter: none; transition: none; } }
     .projects-grid > article > div:last-child { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
     .projects-grid article p { text-align: justify; }
+    .project-tech-icons { display: inline-flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+    .project-tech-icons img { width: 1.15rem; height: 1.15rem; object-fit: contain; opacity: .82; transition: transform 220ms ease, opacity 220ms ease; }
+    .project-tech-icons img:hover { transform: translateY(-2px) scale(1.12); opacity: 1; }
+    .dark .project-tech-icons img { filter: brightness(1.35) saturate(1.1); }
     .projects-grid article { transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease; }
     .projects-grid article:hover { transform: translateY(-6px); box-shadow: 0 18px 35px rgba(24, 32, 48, 0.12); }
   </style>
@@ -891,6 +895,14 @@
         fr: ['04 // Projets sélectionnés', 'Des idées devenues réalité.', 'Plus de projets sur GitHub ↗']
       };
       function renderProjects(language) {
+        const projectTechIcons = [
+          [['Python', 'python', '3776AB'], ['C2PA', 'shield', 'B3263E'], ['MCP', 'server', '64748B'], ['AASIST', 'brain', '7C3AED']],
+          [['OCR', 'googledocs', '4285F4'], ['QVAC', 'q', '00C7B7'], ['OpenAI', 'openai', '10A37F'], ['Voice AI', 'microphone', '64748B']],
+          [['TypeScript', 'typescript', '3178C6'], ['JavaScript', 'javascript', 'F7DF1E'], ['Solidity', 'ethereum', '627EEA']],
+          [['Unity', 'unity', '000000'], ['C#', 'csharp', '239120'], ['Solidity', 'ethereum', '627EEA']],
+          [['Python', 'python', '3776AB'], ['OpenAI', 'openai', '10A37F'], ['ESP32-S3', 'espressif', 'E7352C'], ['Voice AI', 'microphone', '64748B']],
+          [['Python', 'python', '3776AB'], ['WCAG', 'accessibility', '1D4ED8'], ['Lighthouse', 'lighthouse', 'F44B21'], ['PCA', 'chartdotjs', 'FF6384'], ['K-Means', 'databricks', 'FF3621'], ['ANS', 'brain', '7C3AED']]
+        ];
         const section = projectSectionCopy[language];
         document.getElementById('projects-kicker').textContent = section[0];
         document.getElementById('projects-title').innerHTML = `${section[1].split(' ').slice(0, -2).join(' ')} <span class="font-serif italic font-normal text-paper-muted dark:text-carbon-muted">${section[1].split(' ').slice(-2).join(' ')}</span>`;
@@ -905,7 +917,11 @@
           if (labelNode) labelNode.textContent = label;
           if (titleNode) titleNode.textContent = title;
           if (descriptionNode) descriptionNode.textContent = description;
-          if (technologyNode && technologyNode.tagName === 'SPAN') technologyNode.textContent = technologies;
+          if (technologyNode && technologyNode.tagName === 'SPAN') {
+            technologyNode.classList.add('project-tech-icons');
+            technologyNode.setAttribute('aria-label', technologies);
+            technologyNode.innerHTML = projectTechIcons[index].map(([name, icon, color]) => `<img src="https://cdn.simpleicons.org/${icon}/${color}" alt="${name}" title="${name}" loading="lazy">`).join('');
+          }
           if (linkNode && linkNode.textContent.trim()) linkNode.textContent = linkText;
         });
       }
