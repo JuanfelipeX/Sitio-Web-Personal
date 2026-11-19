@@ -109,6 +109,7 @@
     .eco-logo { transform: scale(1.35); }
     .accessibility-logo { transform: scale(1.28); }
     .kobia-logo { transform: scale(1.24); }
+    .qconta-logo { transform: scale(1.12); }
     .projects-grid > article > div:last-child { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
   </style>
 </head>
@@ -506,11 +507,11 @@
         <article class="group rounded-lg border border-vermilion/50 bg-paper-surface/50 dark:bg-carbon-surface/50 hover:border-vermilion transition-colors flex flex-col justify-between overflow-hidden">
           <div>
             <div class="h-44 bg-paper-elevated dark:bg-carbon-elevated border-b border-paper-border dark:border-carbon-border p-5 flex items-center justify-center">
-              <div class="font-mono text-center text-xs uppercase tracking-widest text-paper-muted dark:text-carbon-muted">QCONTA<br>Asistente por voz</div>
+              <img src="assets/img/project-qconta.png" alt="Logo QConta" class="qconta-logo h-full w-full object-cover object-center mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
             </div>
             <div class="p-6 space-y-3">
               <div class="font-mono text-[10px] uppercase tracking-widest text-vermilion">Hackathon · OCR · Voice AI</div>
-              <h3 class="text-xl font-semibold">QConta · Asistente contable por voz</h3>
+              <h3 class="text-xl font-semibold">QConta</h3>
               <p class="text-sm text-paper-muted dark:text-carbon-muted leading-relaxed">MVP que extrae datos de facturas con OCR, los convierte en registros contables y permite consultar ingresos, gastos y movimientos por voz en varios idiomas.</p>
             </div>
           </div>
@@ -824,7 +825,7 @@
       const projectCopy = {
         es: [
           ['AI Safety Hackathon · 3.er lugar', 'ECO', 'Diseñamos una plataforma de defensa epistémica que rastrea el origen de afirmaciones, detecta publicaciones repetidas y verifica su procedencia con C2PA. Integra análisis con LLM, detección de audio sintético y un servidor MCP para consultar fuentes y explicar por qué un contenido resulta confiable.', 'Python · C2PA · MCP · AASIST', 'Ver proyecto ↗'],
-          ['Aleph Hackathon 2026', 'QConta · Asistente contable por voz', 'MVP que procesa facturas con OCR y permite consultar información financiera por voz en varios idiomas. Combina reconocimiento de voz con modelos locales para convertir documentos y conversaciones en datos financieros estructurados.', 'OCR · QVAC · Voice AI', 'Ver ↗'],
+          ['Aleph Hackathon 2026', 'QConta', 'MVP que procesa facturas con OCR y permite consultar información financiera por voz en varios idiomas. Combina reconocimiento de voz con modelos locales para convertir documentos y conversaciones en datos financieros estructurados.', 'OCR · QVAC · Voice AI', 'Ver ↗'],
           ['Hackathon · Blockchain', 'Avax Racing League Argentina', 'Propuesta desarrollada durante un hackathon para impulsar experiencias de carreras y comunidad sobre el ecosistema Avalanche, combinando colaboración, tecnología blockchain y dinámicas competitivas.', 'Blockchain · Git · Web3', 'Ver ↗'],
           ['Community Project · Game · Blockchain', 'GameAvax Bogotá · Ecos de Guacatá', 'Videojuego roguelike inspirado en la cultura local, creado en equipo para explorar nuevas formas de narrar y jugar con tecnología blockchain, personajes y desafíos generados para cada partida.', 'Game · Blockchain · Git', 'Abrir ↗'],
           ['OpenAI Hackathon', 'Kibo · Segundo Cerebro', 'Kibo funciona como un segundo cerebro para personas mayores: escucha y conversa en tiempo real, usa memoria contextual para recuperar información y aplica visión para comprender el entorno. Su experiencia se completa con un compañero robótico construido sobre ESP32-S3.', 'Python · OpenAI · ESP32-S3 · Voice AI', 'Ver proyecto ↗'],
@@ -832,7 +833,7 @@
         ],
         en: [
           ['AI Safety Hackathon · 3rd place', 'ECO', 'An epistemic defense platform that traces claim origins, connects repeated publications, and maps verifiable evidence.', 'Python · C2PA · MCP · AASIST', 'View project ↗'],
-          ['Aleph Hackathon 2026', 'QConta · Voice accounting assistant', 'An MVP that processes invoices with OCR and lets users query financial information by voice in several languages.', 'OCR · QVAC · Voice AI', 'View ↗'],
+          ['Aleph Hackathon 2026', 'QConta', 'An MVP that processes invoices with OCR and lets users query financial information by voice in several languages.', 'OCR · QVAC · Voice AI', 'View ↗'],
           ['Hackathon · Blockchain', 'Avax Racing League Argentina', 'A hackathon proposal for racing experiences and community building on Avalanche.', 'Blockchain · Git · Web3', 'View ↗'],
           ['Community Project · Game · Blockchain', 'GameAvax Bogotá · Ecos de Guacatá', 'A roguelike game inspired by local culture, created collaboratively to explore new ways to tell stories and play.', 'Game · Blockchain · Git', 'Open ↗'],
           ['OpenAI Hackathon', 'Kibo · Second Brain', 'A voice assistant for older adults with OpenAI, contextual memory, vision, and real-time conversation through ESP32-S3.', 'Python · OpenAI · ESP32-S3 · Voice AI', 'View project ↗'],
@@ -840,7 +841,7 @@
         ],
         fr: [
           ['AI Safety Hackathon · 3e place', 'ECO', 'Plateforme de défense épistémique qui retrace l’origine des affirmations et présente un parcours de preuves vérifiables.', 'Python · C2PA · MCP · AASIST', 'Voir le projet ↗'],
-          ['Aleph Hackathon 2026', 'QConta · Assistant comptable vocal', 'MVP qui traite les factures avec OCR et permet de consulter les informations financières par la voix.', 'OCR · QVAC · Voice AI', 'Voir ↗'],
+          ['Aleph Hackathon 2026', 'QConta', 'MVP qui traite les factures avec OCR et permet de consulter les informations financières par la voix.', 'OCR · QVAC · Voice AI', 'Voir ↗'],
           ['Hackathon · Blockchain', 'Avax Racing League Argentina', 'Projet de hackathon pour développer des expériences de course et une communauté sur Avalanche.', 'Blockchain · Git · Web3', 'Voir ↗'],
           ['Projet communautaire · Jeu · Blockchain', 'GameAvax Bogotá · Ecos de Guacatá', 'Jeu roguelike inspiré de la culture locale, créé en équipe pour explorer de nouvelles formes de narration.', 'Jeu · Blockchain · Git', 'Ouvrir ↗'],
           ['OpenAI Hackathon', 'Kibo · Second cerveau', 'Assistant vocal pour les personnes âgées avec OpenAI, mémoire contextuelle, vision et conversation en temps réel via ESP32-S3.', 'Python · OpenAI · ESP32-S3 · Voice AI', 'Voir le projet ↗'],
