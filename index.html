@@ -312,6 +312,10 @@
                 class="px-2.5 py-1 rounded bg-paper-elevated dark:bg-carbon-elevated border border-paper-border dark:border-carbon-border text-paper-text dark:text-carbon-text hover:border-vermilion dark:hover:border-vermilion transition-colors">
                 [ Cambiar transmisión ]
               </button>
+              <button id="sphere-transfer-btn" type="button" aria-label="Activar transferencia Gantz"
+                class="px-2.5 py-1 rounded text-paper-muted dark:text-carbon-muted hover:text-vermilion transition-colors">
+                [ Transferencia ]
+              </button>
               <button id="sphere-mode-btn" type="button"
                 class="px-2.5 py-1 rounded text-paper-muted dark:text-carbon-muted hover:text-paper-text dark:hover:text-carbon-text transition-colors"
                 title="Alternar entre la matriz de misión y el retrato de Juan Felipe">
@@ -1073,6 +1077,7 @@
       const ctx = canvas.getContext('2d');
 
       const nextBtn = document.getElementById('sphere-next-btn');
+      const transferBtn = document.getElementById('sphere-transfer-btn');
       const modeBtn = document.getElementById('sphere-mode-btn');
       const modeLabel = document.getElementById('sphere-mode-label');
       const coordsLabel = document.getElementById('sphere-coords');
@@ -1141,6 +1146,7 @@
       let lastY = 0;
       let pulseRadius = 0;
       let pulseAlpha = 0;
+      let transferProgress = 0;
       let targetZoom = 1;
       let currentZoom = 1;
       let lastInteraction = performance.now();
@@ -1210,7 +1216,13 @@
         pulseAlpha = 0.75;
       }
 
+      function triggerTransfer() {
+        triggerPulseAndNextMission();
+        transferProgress = 1;
+      }
+
       nextBtn.addEventListener('click', triggerPulseAndNextMission);
+      if (transferBtn) transferBtn.addEventListener('click', triggerTransfer);
 
       modeBtn.addEventListener('click', () => {
         lastInteraction = performance.now();
@@ -1264,6 +1276,10 @@
       canvas.addEventListener('click', () => {
         lastInteraction = performance.now();
         triggerPulseAndNextMission();
+      });
+      canvas.addEventListener('dblclick', () => {
+        lastInteraction = performance.now();
+        triggerTransfer();
       });
 
       canvas.addEventListener('wheel', (e) => {
@@ -1395,6 +1411,25 @@
         ctx.arc(cx, cy, R, 0, Math.PI * 2);
         ctx.clip();
 
+        // Gantz-inspired transfer beams sweep across the shell after a double click.
+        if (transferProgress > 0) {
+          const transferAlpha = Math.sin(transferProgress * Math.PI) * 0.75;
+          ctx.save();
+          ctx.globalCompositeOperation = 'screen';
+          for (let beam = -3; beam <= 3; beam++) {
+            const x = cx + beam * R * 0.23 + (1 - transferProgress) * R * 0.45;
+            const width = R * (0.018 + transferProgress * 0.012);
+            const beamGradient = ctx.createLinearGradient(x - width, cy - R, x + width, cy + R);
+            beamGradient.addColorStop(0, 'rgba(53,215,255,0)');
+            beamGradient.addColorStop(.5, `rgba(53,215,255,${transferAlpha.toFixed(3)})`);
+            beamGradient.addColorStop(1, 'rgba(53,215,255,0)');
+            ctx.fillStyle = beamGradient;
+            ctx.fillRect(x - width, cy - R, width * 2, R * 2);
+          }
+          ctx.restore();
+          transferProgress = Math.max(0, transferProgress - 0.035);
+        }
+
         // Moving, restrained reflections add a satin-metal finish to the black shell.
         ctx.save();
         ctx.globalCompositeOperation = 'screen';
@@ -1486,6 +1521,23 @@
             ctx.arc(lx, ly, R * 0.03 * lockCenter.z, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(53, 215, 255, 0.78)';
             ctx.fill();
+          }
+        });
+
+        // Surface anchors behave like small interactive data points.
+        [-0.72, -0.28, 0.22, 0.68].forEach((lat, index) => {
+          const point = rotate3D(Math.sin(index * 1.7) * 0.62, Math.sin(lat), Math.cos(lat) * 0.78, currentYaw, currentPitch);
+          if (point.z > 0.18) {
+            const px = cx + point.x * R;
+            const py = cy + point.y * R;
+            const glow = 0.45 + Math.sin(clock * 2.4 + index) * 0.16;
+            ctx.beginPath();
+            ctx.arc(px, py, R * 0.025, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(53,215,255,${glow.toFixed(2)})`;
+            ctx.shadowColor = 'rgba(53,215,255,.85)';
+            ctx.shadowBlur = R * 0.06;
+            ctx.fill();
+            ctx.shadowBlur = 0;
           }
         });
 
