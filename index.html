@@ -295,7 +295,7 @@
             <!-- Interactive 3D Sphere Canvas -->
             <div class="relative w-full aspect-square flex items-center justify-center my-1">
               <canvas id="gantz-sphere-canvas" tabindex="0" role="button"
-                aria-label="Esfera negra interactiva inspirada en Gantz. Mueve el cursor o arrastra para rotarla; cambia al modo retrato para ver la ilustración de Juan Felipe."
+                aria-label="Esfera negra interactiva inspirada en Gantz. Arrastra para rotarla, usa la rueda para acercar o alejar, las flechas para moverla y Enter para cambiar la transmisión."
                 class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
             </div>
 
@@ -313,7 +313,7 @@
             </div>
           </div>
           <p class="mt-2.5 font-mono text-[11px] text-paper-muted dark:text-carbon-muted text-center">
-            Mueve o arrastra la esfera · Alterna entre transmisión y retrato
+            Arrastra · rueda para zoom · flechas para rotar · cambia la transmisión
           </p>
         </div>
 
@@ -1134,6 +1134,9 @@
       let lastY = 0;
       let pulseRadius = 0;
       let pulseAlpha = 0;
+      let targetZoom = 1;
+      let currentZoom = 1;
+      let lastInteraction = performance.now();
 
       function resizeCanvas() {
         const rect = canvas.parentElement.getBoundingClientRect();
@@ -1203,6 +1206,7 @@
       nextBtn.addEventListener('click', triggerPulseAndNextMission);
 
       modeBtn.addEventListener('click', () => {
+        lastInteraction = performance.now();
         displayMode = displayMode === 'matrix' ? 'portrait' : 'matrix';
         modeLabel.textContent = displayMode === 'matrix' ? 'Matriz' : 'Retrato';
         pulseRadius = 0.92;
@@ -1240,6 +1244,7 @@
       }, { passive: true });
 
       canvas.addEventListener('mousedown', (e) => {
+        lastInteraction = performance.now();
         isDragging = true;
         lastX = e.clientX;
         lastY = e.clientY;
@@ -1250,19 +1255,38 @@
       });
 
       canvas.addEventListener('click', () => {
+        lastInteraction = performance.now();
         triggerPulseAndNextMission();
       });
+
+      canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        lastInteraction = performance.now();
+        targetZoom = Math.max(0.84, Math.min(1.2, targetZoom - e.deltaY * 0.0007));
+      }, { passive: false });
 
       canvas.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
+          lastInteraction = performance.now();
           triggerPulseAndNextMission();
+        }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          lastInteraction = performance.now();
+          targetYaw += e.key === 'ArrowLeft' ? -0.16 : 0.16;
+        }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          lastInteraction = performance.now();
+          targetPitch = Math.max(-0.55, Math.min(0.55, targetPitch + (e.key === 'ArrowUp' ? -0.12 : 0.12)));
         }
       });
 
       // Touch support
       canvas.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
+          lastInteraction = performance.now();
           isDragging = true;
           lastX = e.touches[0].clientX;
           lastY = e.touches[0].clientY;
@@ -1298,7 +1322,9 @@
 
         const cx = width / 2;
         const cy = height / 2;
-        const R = Math.min(width, height) * 0.39 * (1 + breath);
+        if (!isDragging && !prefersReducedMotion && time - lastInteraction > 1400) targetYaw += 0.0009;
+        currentZoom += (targetZoom - currentZoom) * 0.08;
+        const R = Math.min(width, height) * 0.39 * (1 + breath) * currentZoom;
 
         // A soft red and blue aura gives the stage depth without drawing an orbit line.
         ctx.save();
@@ -1465,7 +1491,7 @@
                 ? { heading: 'LANGUES', labels: ['ESPAGNOL NATIF', 'ANGLAIS B2', 'FRANCAIS A2'] }
                 : { heading: 'IDIOMAS', labels: ['ESPANOL NATIVO', 'INGLES B2', 'FRANCES A2'] };
 
-            const headingDots = getLineDots3D(panel.heading, -0.36, 0.022);
+            const headingDots = getLineDots3D(panel.heading, -0.36, 0.018);
             headingDots.forEach(d => {
               const p = rotate3D(d.x, d.y, d.z, currentYaw, currentPitch);
               if (p.z > 0.15) {
@@ -1485,7 +1511,7 @@
             languages.forEach((language, idx) => {
               const flagW = R * 0.18;
               const flagH = R * 0.11;
-              const flagX = cx - R * 0.58;
+              const flagX = cx - R * 0.54;
               const flagY = cy + language.lat * R - flagH / 2;
 
               ctx.save();
@@ -1516,12 +1542,12 @@
               ctx.lineWidth = 0.8;
               ctx.strokeRect(flagX, flagY, flagW, flagH);
 
-              const dots = getLineDots3D(language.label, language.lat, 0.018);
+              const dots = getLineDots3D(language.label, language.lat, 0.0135);
               dots.forEach(d => {
                 const p = rotate3D(d.x, d.y, d.z, currentYaw, currentPitch);
                 if (p.z > 0.15) {
                   ctx.beginPath();
-                  ctx.arc(cx + p.x * R + R * 0.22, cy + p.y * R, Math.max(0.85, R * 0.011 * p.z), 0, Math.PI * 2);
+                  ctx.arc(cx + p.x * R + R * 0.17, cy + p.y * R, Math.max(0.85, R * 0.010 * p.z), 0, Math.PI * 2);
                   ctx.fillStyle = `rgba(53, 215, 255, ${(Math.min(1, (p.z - 0.15) * 1.35) * (0.9 + Math.sin(clock * 1.5 + idx) * 0.08)).toFixed(2)})`;
                   ctx.fill();
                 }
