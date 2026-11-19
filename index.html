@@ -896,16 +896,21 @@
       };
       function renderProjects(language) {
         const projectTechIcons = [
-          [['Python', 'python', '3776AB'], ['C2PA', 'local:ai.svg', 'B3263E'], ['MCP', 'local:ai.svg', '64748B'], ['AASIST', 'local:ai.svg', '7C3AED']],
-          [['OCR', 'googledocs', '4285F4'], ['QVAC', 'local:ai.svg', '00C7B7'], ['OpenAI', 'openai', '10A37F'], ['Voice AI', 'local:ai.svg', '64748B']],
+          [['Python', 'python', '3776AB'], ['C2PA', 'badge:C2', 'B3263E'], ['MCP', 'badge:MC', '64748B'], ['AASIST', 'badge:AI', '7C3AED']],
+          [['OCR', 'badge:OCR', '4285F4'], ['QVAC', 'badge:QV', '00C7B7'], ['OpenAI', 'openai', '10A37F'], ['Voice AI', 'badge:VA', '64748B']],
           [['TypeScript', 'typescript', '3178C6'], ['JavaScript', 'javascript', 'F7DF1E'], ['Solidity', 'ethereum', '627EEA']],
-          [['Unity', 'unity', '000000'], ['C#', 'dotnet', '512BD4'], ['Solidity', 'ethereum', '627EEA']],
-          [['Python', 'python', '3776AB'], ['OpenAI', 'openai', '10A37F'], ['ESP32-S3', 'espressif', 'E7352C'], ['Voice AI', 'microphone', '64748B']],
-          [['Python', 'python', '3776AB'], ['WCAG', 'universalaccess', '1D4ED8'], ['Lighthouse', 'lighthouse', 'F44B21'], ['PCA', 'googleanalytics', 'FF6384'], ['K-Means', 'databricks', 'FF3621'], ['ANS', 'local:ai.svg', '7C3AED']]
+          [['Unity', 'unity', '000000'], ['C#', 'badge:C#', '512BD4'], ['Solidity', 'ethereum', '627EEA']],
+          [['Python', 'python', '3776AB'], ['OpenAI', 'openai', '10A37F'], ['ESP32-S3', 'badge:ES', 'E7352C'], ['Voice AI', 'badge:VA', '64748B']],
+          [['Python', 'python', '3776AB'], ['WCAG', 'badge:WC', '1D4ED8'], ['Lighthouse', 'lighthouse', 'F44B21'], ['PCA', 'badge:PC', 'FF6384'], ['K-Means', 'databricks', 'FF3621'], ['ANS', 'badge:AN', '7C3AED']]
         ];
-        const iconUrl = (icon, color) => icon.startsWith('local:')
-          ? `assets/img/tech/${icon.slice(6)}`
-          : `https://cdn.simpleicons.org/${icon}/${color}`;
+        const iconUrl = (icon, color) => {
+          if (icon.startsWith('badge:')) {
+            const label = icon.slice(6);
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect x="1" y="1" width="38" height="38" rx="9" fill="#${color}"/><text x="20" y="24" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="white">${label}</text></svg>`;
+            return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+          }
+          return `https://cdn.simpleicons.org/${icon}/${color}`;
+        };
         const section = projectSectionCopy[language];
         document.getElementById('projects-kicker').textContent = section[0];
         document.getElementById('projects-title').innerHTML = `${section[1].split(' ').slice(0, -2).join(' ')} <span class="font-serif italic font-normal text-paper-muted dark:text-carbon-muted">${section[1].split(' ').slice(-2).join(' ')}</span>`;
